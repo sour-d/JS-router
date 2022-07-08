@@ -15,7 +15,7 @@ class Router {
   }
 
   POST(url, handler,) {
-    this.#routes.GET.push({ method: 'POST', url, handler });
+    this.#routes.POST.push({ method: 'POST', url, handler });
   }
 
   #findRoute(url, method) {
@@ -23,15 +23,15 @@ class Router {
     return this.#routes[method].filter(route => route.url === url);
   }
 
-  handle(request, response) {
+  handle(request, response, session) {
     const routes = this.#findRoute(request.url.pathname, request.method);
     for (const route of routes) {
       if (route.method === request.method) {
-        return route.handler(request, response);
+        return route.handler(request, response, session);
       }
     }
 
-    this.#defaultHandler(request, response);
+    this.#defaultHandler(request, response, session);
   }
 }
 
